@@ -21,7 +21,7 @@ Aplikasi blog/portal berita berbasis Laravel dengan halaman publik dan panel adm
 - PHP 8.2+
 - Laravel 12
 - Filament 4
-- SQLite (default), bisa diganti MySQL/PostgreSQL
+- MySQL
 - Vite + Tailwind CSS
 
 ## Prasyarat
@@ -62,21 +62,26 @@ Windows PowerShell:
 Copy-Item .env.example .env
 ```
 
-4. Siapkan database SQLite (default konfigurasi `.env.example`).
+4. Buat database MySQL, misalnya `blog`.
 
-Linux/macOS:
+Contoh via MySQL CLI:
 
 ```bash
-touch database/database.sqlite
+mysql -u root -p -e "CREATE DATABASE blog CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 ```
 
-Windows PowerShell:
+5. Atur koneksi database di `.env`:
 
-```powershell
-if (!(Test-Path "database/database.sqlite")) { New-Item -ItemType File "database/database.sqlite" | Out-Null }
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=blog
+DB_USERNAME=root
+DB_PASSWORD=
 ```
 
-5. Generate app key, jalankan migrasi, seed data awal, dan buat symlink storage.
+6. Generate app key, jalankan migrasi, seed data awal, dan buat symlink storage.
 
 ```bash
 php artisan key:generate
@@ -85,13 +90,13 @@ php artisan db:seed
 php artisan storage:link
 ```
 
-6. Jalankan mode development (server + queue + vite).
+7. Jalankan mode development (server + queue + vite).
 
 ```bash
 composer run dev
 ```
 
-7. Buka aplikasi:
+8. Buka aplikasi:
 
 - Frontend: `http://127.0.0.1:8000`
 - Admin: `http://127.0.0.1:8000/admin`
